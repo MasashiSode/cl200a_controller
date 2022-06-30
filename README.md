@@ -10,9 +10,7 @@ this code is developed based on:
 
 https://github.com/maslyankov/luxmeters-py
 
-current code coverage can be found here
-
-https://github.com/MasashiSode/cl200a_controller/issues/1
+current code coverage can be found [here](https://github.com/MasashiSode/cl200a_controller/issues/1)
 
 ## prerequisite
 
