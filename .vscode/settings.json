@@ -1,0 +1,20 @@
+{
+    "python.formatting.provider": "black",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintArgs": [
+        "--rcfile=.pylintrc"
+    ],
+    "python.formatting.blackArgs": [
+        "--line-length=99"
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": false
+    },
+    "python.testing.autoTestDiscoverOnSaveEnabled": true
+}
