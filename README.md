@@ -3,10 +3,16 @@
 the library to control CL200A chroma meter/luxmeter.
 
 All documentation can be found:
+
 http://www.konicaminolta.com.cn/instruments/download/software/pdf/CL-200A_communication_specifications.pdf
 
 this code is developed based on:
+
 https://github.com/maslyankov/luxmeters-py
+
+current code coverage can be found here
+
+https://github.com/MasashiSode/cl200a_controller/issues/1
 
 ## prerequisite
 
