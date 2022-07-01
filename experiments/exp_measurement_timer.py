@@ -26,6 +26,7 @@ class MeasurementTimer:
             lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f")
         )
         df_output["time_diff"] = df_output["measured_time"].diff()
+        df_output["time_diff"] = df_output["time_diff"].apply(lambda x: x.total_seconds())
 
         return df_output
 
@@ -46,6 +47,10 @@ class MeasurementTimer:
 
 if __name__ == "__main__":
     luxmeter_ = CL200A(debug=False)
-    measurement_timer = MeasurementTimer(luxmeter=luxmeter_)
-    df = measurement_timer.measure_periodically(period=1, end_time=10)
-    print(df)
+    while True:
+        name = input("please enter export name: ")
+        now = datetime.now()
+        output_name = now.strftime("%Y%m%d_%H%M%S") + "_" + name + ".csv"
+        measurement_timer = MeasurementTimer(luxmeter=luxmeter_)
+        df = measurement_timer.measure_periodically(period=1, end_time=10)
+        df.to_csv(output_name)
