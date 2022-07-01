@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 from pathlib import Path
 
@@ -30,28 +31,32 @@ class TestCL200A:
         assert isinstance(cl200a.log_file_path, Path)
 
     def test_get_ev_x_y(self, cl200a):
-        ev, x, y = cl200a.get_ev_x_y()
+        ev, x, y, measured_time = cl200a.get_ev_x_y()
         assert isinstance(ev, float)
         assert isinstance(x, float)
         assert isinstance(y, float)
+        assert isinstance(measured_time, datetime)
 
     def test_get_x_y_z(self, cl200a):
-        x, y, z = cl200a.get_x_y_z()
+        x, y, z, measured_time = cl200a.get_x_y_z()
         assert isinstance(x, float)
         assert isinstance(y, float)
         assert isinstance(z, float)
+        assert isinstance(measured_time, datetime)
 
     def test_get_ev_u_v(self, cl200a):
-        ev, u, v = cl200a.get_ev_u_v()
+        ev, u, v, measured_time = cl200a.get_ev_u_v()
         assert isinstance(ev, float)
         assert isinstance(u, float)
         assert isinstance(v, float)
+        assert isinstance(measured_time, datetime)
 
     def test_get_ev_tcp_delta_uv(self, cl200a):
-        ev, tcp, delta_uv = cl200a.get_ev_tcp_delta_uv()
+        ev, tcp, delta_uv, measured_time = cl200a.get_ev_tcp_delta_uv()
         assert isinstance(ev, float)
         assert isinstance(tcp, float)
         assert isinstance(delta_uv, float)
+        assert isinstance(measured_time, datetime)
 
     def test_debug_mode(self, log_file_path, mock_logger):
         Logger.reset_logger()
