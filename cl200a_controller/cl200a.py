@@ -220,7 +220,7 @@ class CL200A:
         result = self._perform_measurement(self.cmd_dict["command_03"])
         ev, u, v = CL200Utils.extract_ev_u_v(result)
 
-        self.logger.debug(f"Illuminance: {ev} lux, u: {u}, DeltaUV: {v}")
+        self.logger.debug(f"Illuminance: {ev} lux, u: {u}, v: {v}")
 
         return ev, u, v
 
