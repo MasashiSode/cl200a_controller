@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 from typing import Tuple
 
@@ -124,7 +125,7 @@ class CL200A:
 
             break
 
-    def _perform_measurement(self, read_cmd: str) -> str:
+    def _perform_measurement(self, read_cmd: str) -> Tuple[str, datetime]:
         """_perform_measurement (internal use)
 
         Args:
@@ -136,6 +137,7 @@ class CL200A:
 
         Returns:
             str: result from the CL-200A
+            datetime: time of measurement
         """
 
         self.ser.reset_input_buffer()
@@ -147,6 +149,7 @@ class CL200A:
         CL200Utils.write_serial_port(ser=self.ser, cmd=cmd_ext, sleep_time=0.5)
         # read data
         CL200Utils.write_serial_port(ser=self.ser, cmd=cmd_read, sleep_time=0)
+        measured_time = datetime.now()
         try:
             serial_ret = self.ser.readline()
             if len(serial_ret) == 0:
@@ -160,11 +163,11 @@ class CL200A:
 
         self.logger.debug(f"Got raw data: {result.rstrip()}")
 
-        return result
+        return result, measured_time
 
     # pylint: disable=invalid-name
     # the names ev, y, z are used in the documentation
-    def get_ev_x_y(self) -> Tuple[float, float, float]:
+    def get_ev_x_y(self) -> Tuple[float, float, float, datetime]:
         """get_ev_x_y
         read the most recent measurement data from the CL-200A to the PC in terms of Ev, x, y
         (command 02)
@@ -176,17 +179,17 @@ class CL200A:
             float: measured value
         """
 
-        result: str = self._perform_measurement(self.cmd_dict["command_02"])
+        result, measured_time = self._perform_measurement(self.cmd_dict["command_02"])
         # Convert Measurement
         ev, x, y = CL200Utils.extract_ev_x_y(result)
 
         self.logger.debug(f"Returning {ev} luxes, x: {x}, y: {y}")
 
-        return ev, x, y
+        return ev, x, y, measured_time
 
     # pylint: disable=invalid-name
     # the names x, y, z are used in the documentation
-    def get_x_y_z(self) -> Tuple[float, float, float]:
+    def get_x_y_z(self) -> Tuple[float, float, float, datetime]:
         """get_x_y_z
         read the most recent measurement data from the CL-200A to the PC in terms of X, Y, Z.
         (command 01)
@@ -197,16 +200,16 @@ class CL200A:
         Returns:
             float: measured value
         """
-        result: str = self._perform_measurement(self.cmd_dict["command_01"])
+        result, measured_time = self._perform_measurement(self.cmd_dict["command_01"])
         x, y, z = CL200Utils.extract_x_y_z(result)
 
         self.logger.debug(f"X: {x}, Y: {y}, Z: {z}")
 
-        return x, y, z
+        return x, y, z, measured_time
 
     # pylint: disable=invalid-name
     # the names ev, u, v are used in the documentation
-    def get_ev_u_v(self) -> Tuple[float, float, float]:
+    def get_ev_u_v(self) -> Tuple[float, float, float, datetime]:
         """get_ev_tcp_delta_uv
         To read the most recent measurement data from the CL-200A to the PC in terms of Ev, u', v'.
         (command 03)
@@ -217,16 +220,16 @@ class CL200A:
         Returns:
             float: measured value
         """
-        result = self._perform_measurement(self.cmd_dict["command_03"])
+        result, measured_time = self._perform_measurement(self.cmd_dict["command_03"])
         ev, u, v = CL200Utils.extract_ev_u_v(result)
 
         self.logger.debug(f"Illuminance: {ev} lux, u: {u}, v: {v}")
 
-        return ev, u, v
+        return ev, u, v, measured_time
 
     # pylint: disable=invalid-name
     # the names ev, tcp, delta_uv are used in the documentation
-    def get_ev_tcp_delta_uv(self) -> Tuple[float, float, float]:
+    def get_ev_tcp_delta_uv(self) -> Tuple[float, float, float, datetime]:
         """get_ev_tcp_delta_uv
         To read the most recent measurement data
         from the CL-200A to the PC in terms of EV, TCP, Δuv.
@@ -238,9 +241,9 @@ class CL200A:
         Returns:
             float: measured value
         """
-        result = self._perform_measurement(self.cmd_dict["command_08"])
+        result, measured_time = self._perform_measurement(self.cmd_dict["command_08"])
         ev, tcp, delta_uv = CL200Utils.extract_ev_tcp_delta_uv(result)
 
         self.logger.debug(f"Illuminance: {ev} lux, TCP: {tcp}, DeltaUV: {delta_uv}")
 
-        return ev, tcp, delta_uv
+        return ev, tcp, delta_uv, measured_time
