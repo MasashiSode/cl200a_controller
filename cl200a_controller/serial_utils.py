@@ -36,7 +36,8 @@ class SerialUtils:
 
         Args:
             keyword (str): search keyword. e.g. "FTDI"
-            target (str, optional): target key in the serial port dictionary. Defaults to "manufacturer".
+            target (str, optional): target key in the serial port dictionary.
+            Defaults to "manufacturer".
 
         Raises:
             SerialException: raises when no luxmeter is found.
