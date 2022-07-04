@@ -44,16 +44,18 @@ class CL200A:
         try:
             self.port = SerialUtils.find_all_luxmeters("FTDI")[0]
         except SerialException as exc:
+            self.logger.error("Error: Serial port not found")
             raise exc
 
         try:
             self.ser = CL200Utils.connect_serial_port(
                 self.port, parity=PARITY_EVEN, bytesize=SEVENBITS
             )
-        except SerialException("Could not connect to luxmeter") as exc:
+        except SerialException as exc:
             self.logger.error("Error: Could not connect to Lux Meter")
             raise exc
 
+        self.is_connected: bool = False
         self._connection()
         self._hold_mode()
         self._ext_mode()
@@ -71,6 +73,8 @@ class CL200A:
         self.logger.info("Setting CL-200A to PC connection mode")
         try:
             CL200Utils.connect_luxmeter(ser=self.ser)
+            self.is_connected = True
+
         except SerialException as exc:
             raise exc
 
