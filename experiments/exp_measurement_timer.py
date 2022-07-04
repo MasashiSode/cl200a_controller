@@ -45,12 +45,16 @@ class MeasurementTimer:
         output_list.append(output_dict)
 
 
-if __name__ == "__main__":
-    luxmeter_ = CL200A(debug=False)
+def main():
+    luxmeter = CL200A(debug=False)
     while True:
         name = input("please enter export name: ")
         now = datetime.now()
         output_name = now.strftime("%Y%m%d_%H%M%S") + "_" + name + ".csv"
-        measurement_timer = MeasurementTimer(luxmeter=luxmeter_)
-        df = measurement_timer.measure_periodically(period=1, end_time=10)
-        df.to_csv(output_name)
+        measurement_timer = MeasurementTimer(luxmeter=luxmeter)
+        df_output = measurement_timer.measure_periodically(period=1, end_time=10)
+        df_output.to_csv(output_name)
+
+
+if __name__ == "__main__":
+    main()
