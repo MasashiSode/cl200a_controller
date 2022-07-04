@@ -1,0 +1,42 @@
+# .github/workflows/app.yaml
+name: PyTest
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        python-version: ["3.8.10"]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      # Setup Python (faster than using Python container)
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python
+          /opt/poetry/bin/poetry config virtualenvs.create false
+          /opt/poetry/bin/poetry install --no-root
+          echo "/opt/poetry/bin" >> $GITHUB_PATH
+
+      - name: Run test suite and build coverage file
+        run: |
+          make test > pytest-coverage.txt
+      - name: pytest-coverage-commentator
+        id: coverageComment
+        uses: coroo/pytest-coverage-commentator@v1.0.2
+        with:
+          pytest-coverage: pytest-coverage.txt

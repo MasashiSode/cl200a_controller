@@ -92,8 +92,6 @@ class CL200Utils:
             if is_connected:
                 break
 
-            raise SerialException("Konica Minolta CL-200A has an error. Please verify USB cable.")
-
         return is_connected
 
     @classmethod
@@ -164,7 +162,7 @@ class CL200Utils:
         """
         try:
             ser.write(cmd.encode())
-        except SerialException("Connection to Luxmeter was lost.") as exc:
+        except SerialException as exc:
             raise exc
 
         sleep(sleep_time)
