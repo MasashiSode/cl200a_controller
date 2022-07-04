@@ -1,6 +1,7 @@
 import threading
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
@@ -47,10 +48,11 @@ class MeasurementTimer:
 
 def main():
     luxmeter = CL200A(debug=False)
+    output_dir = Path("results/")
     while True:
         name = input("please enter export name: ")
         now = datetime.now()
-        output_name = now.strftime("%Y%m%d_%H%M%S") + "_" + name + ".csv"
+        output_name = output_dir / (now.strftime("%Y%m%d_%H%M%S") + "_" + name + ".csv")
         measurement_timer = MeasurementTimer(luxmeter=luxmeter)
         df_output = measurement_timer.measure_periodically(period=1, end_time=10)
         df_output.to_csv(output_name)
