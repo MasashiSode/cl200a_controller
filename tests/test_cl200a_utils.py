@@ -1,12 +1,13 @@
 import pytest
+from serial import SerialException
+
 from cl200a_controller.cl200a_utils import (
     CL200Utils,
-    MeasurementValueOverError,
     LowBatteryError,
     LowLuminanceError,
+    MeasurementValueOverError,
     ValueOutOfRangeError,
 )
-from serial import SerialException
 
 
 @pytest.fixture()
