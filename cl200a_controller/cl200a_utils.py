@@ -86,8 +86,8 @@ class CL200Utils:
 
                 return is_connected
 
-            ser.reset_input_buffer()
-            ser.reset_output_buffer()
+            ser.flushInput()
+            ser.flushOutput()
 
             if is_connected:
                 break
