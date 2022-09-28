@@ -18,7 +18,7 @@ pytest = "^6.1.2"
 pylint = "^2.6.0"
 pre-commit = "^2.19.0"
 pytest-cov = "^3.0.0"
-pytest-mock = "^3.7.0"
+pytest-mock = "^3.9.0"
 testfixtures = "^6.18.5"
 pandas = "^1.4.3"
 
